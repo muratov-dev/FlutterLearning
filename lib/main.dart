@@ -7,51 +7,64 @@ class ScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Stateful Widget')),
+        appBar: AppBar(title: const Text('Column and Row Widgets')),
         body: SimpleWidget(),
       ),
     );
   }
 }
 
-class SimpleWidget extends StatelessWidget {
-  const SimpleWidget({super.key});
+class TextWidget extends StatelessWidget {
+  const TextWidget({
+    super.key,
+    required this.text,
+    required this.color,
+    required this.width,
+    required this.fontSize,
+  });
+
+  final String text;
+  final Color color;
+  final double width;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 300,
-        width: double.infinity,
-        alignment: Alignment.center,
-        // padding: EdgeInsets.all(50),
-        margin: EdgeInsets.all(50),
-        // transform: Matrix4.rotationZ(0.1),
-        decoration: BoxDecoration(
-          // gradient: LinearGradient(colors: [Colors.red, Colors.cyan]),
-          // color: Colors.green,
-          image: DecorationImage(
-            image: Image.network(
-              'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-            ).image,
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.white30, width: 8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black45,
-              offset: Offset(0, 5),
-              blurRadius: 10,
-              spreadRadius: 5,
-            ),
-          ],
+    return Container(
+      width: width,
+      color: color,
+      child: Text(text, style: TextStyle(fontSize: fontSize)),
+    );
+  }
+}
+
+class SimpleWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        TextWidget(
+          color: Colors.lightGreen,
+          width: 120,
+          text: 'Hello',
+          fontSize: 40,
         ),
-        child: Text(
-          'panda',
-          style: TextStyle(fontSize: 40, color: Colors.white),
+        TextWidget(
+          color: Colors.deepOrange,
+          width: 180,
+          text: 'Beautiful',
+          fontSize: 50,
         ),
-      ),
+        TextWidget(
+          color: Colors.tealAccent,
+          width: 240,
+          text: 'World',
+          fontSize: 60,
+        ),
+      ],
     );
   }
 }
