@@ -14,34 +14,43 @@ class ScreenWidget extends StatelessWidget {
   }
 }
 
-class SimpleWidget extends StatefulWidget {
-  @override
-  _SimpleWidgetState createState() => new _SimpleWidgetState();
-}
-
-class _SimpleWidgetState extends State<SimpleWidget> {
-  int _count = 0;
-
-  void _handleButton() {
-    setState(() {
-      _count++;
-    });
-  }
+class SimpleWidget extends StatelessWidget {
+  const SimpleWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('$_count'),
-          ElevatedButton(
-            onPressed: () {
-              _handleButton();
-            },
-            child: Text('Click Click'),
+      child: Container(
+        height: 300,
+        width: double.infinity,
+        alignment: Alignment.center,
+        // padding: EdgeInsets.all(50),
+        margin: EdgeInsets.all(50),
+        // transform: Matrix4.rotationZ(0.1),
+        decoration: BoxDecoration(
+          // gradient: LinearGradient(colors: [Colors.red, Colors.cyan]),
+          // color: Colors.green,
+          image: DecorationImage(
+            image: Image.network(
+              'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
+            ).image,
+            fit: BoxFit.cover,
           ),
-        ],
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.white30, width: 8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black45,
+              offset: Offset(0, 5),
+              blurRadius: 10,
+              spreadRadius: 5,
+            ),
+          ],
+        ),
+        child: Text(
+          'panda',
+          style: TextStyle(fontSize: 40, color: Colors.white),
+        ),
       ),
     );
   }
