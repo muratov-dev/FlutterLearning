@@ -7,18 +7,42 @@ class ScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Stateless Widget')),
+        appBar: AppBar(title: const Text('Stateful Widget')),
         body: SimpleWidget(),
       ),
     );
   }
 }
 
-class SimpleWidget extends StatelessWidget {
+class SimpleWidget extends StatefulWidget {
+  @override
+  _SimpleWidgetState createState() => new _SimpleWidgetState();
+}
+
+class _SimpleWidgetState extends State<SimpleWidget> {
+  int _count = 0;
+
+  void _handleButton() {
+    setState(() {
+      _count++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text('Мой текст', textDirection: TextDirection.ltr)),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('$_count'),
+          ElevatedButton(
+            onPressed: () {
+              _handleButton();
+            },
+            child: Text('Click Click'),
+          ),
+        ],
+      ),
     );
   }
 }
