@@ -6,9 +6,10 @@ class ScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text('ListView Widget')),
-        body: ListViewCustomWidget(),
+        appBar: AppBar(title: const Text('GridView Widget')),
+        body: GridViewCustomWidget(),
       ),
     );
   }
@@ -33,13 +34,15 @@ class TextWidget extends StatelessWidget {
   }
 }
 
-class SimpleWidget extends StatelessWidget {
+class GridViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return GridView(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
       scrollDirection: Axis.vertical,
       reverse: false,
-      controller: ScrollController(initialScrollOffset: 50),
       padding: EdgeInsets.all(20),
       children: [
         TextWidget(text: '1'),
@@ -57,13 +60,13 @@ class SimpleWidget extends StatelessWidget {
   }
 }
 
-class ListViewBuilderWidget extends StatelessWidget {
-  const ListViewBuilderWidget({super.key});
-
+class GridViewBuilderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      // itemCount: 20,
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
       itemBuilder: (context, index) {
         return TextWidget(text: index.toString());
       },
@@ -71,35 +74,73 @@ class ListViewBuilderWidget extends StatelessWidget {
   }
 }
 
-class ListViewSeparatedWidget extends StatelessWidget {
-  const ListViewSeparatedWidget({super.key});
-
+class GridViewCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: 20,
-      itemBuilder: (context, index) {
-        return TextWidget(text: index.toString());
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
+    return GridView.count(
+      crossAxisCount: 2,
+      children: [
+        TextWidget(text: '1'),
+        TextWidget(text: '2'),
+        TextWidget(text: '3'),
+        TextWidget(text: '4'),
+        TextWidget(text: '5'),
+        TextWidget(text: '6'),
+        TextWidget(text: '7'),
+        TextWidget(text: '8'),
+        TextWidget(text: '9'),
+        TextWidget(text: '10'),
+      ],
     );
   }
 }
 
-class ListViewCustomWidget extends StatelessWidget {
-  const ListViewCustomWidget({super.key});
-
+class GridViewExtentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.custom(
-      childrenDelegate: SliverChildBuilderDelegate((
-        BuildContext context,
-        int index,
-      ) {
-        return TextWidget(text: index.toString());
-      }),
+    final queryData = MediaQuery.of(context);
+    print(queryData.size);
+    return Container(
+      width: 300,
+      color: Colors.green,
+      child: GridView.extent(
+        maxCrossAxisExtent: 100,
+        children: [
+          TextWidget(text: '1'),
+          TextWidget(text: '2'),
+          TextWidget(text: '3'),
+          TextWidget(text: '4'),
+          TextWidget(text: '5'),
+          TextWidget(text: '6'),
+          TextWidget(text: '7'),
+          TextWidget(text: '8'),
+          TextWidget(text: '9'),
+          TextWidget(text: '10'),
+        ],
+      ),
+    );
+  }
+}
+
+class GridViewCustomWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.custom(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      childrenDelegate: SliverChildListDelegate([
+        TextWidget(text: '1'),
+        TextWidget(text: '2'),
+        TextWidget(text: '3'),
+        TextWidget(text: '4'),
+        TextWidget(text: '5'),
+        TextWidget(text: '6'),
+        TextWidget(text: '7'),
+        TextWidget(text: '8'),
+        TextWidget(text: '9'),
+        TextWidget(text: '10'),
+      ]),
     );
   }
 }
