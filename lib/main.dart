@@ -1,7 +1,5 @@
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(ScreenWidget());
 
@@ -10,100 +8,51 @@ class ScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      scrollBehavior: AppScrollBehavior(),
+      theme: ThemeData(fontFamily: 'Outfit'),
       home: Scaffold(
-        appBar: AppBar(title: const Text('PageView Widget')),
-        body: PageViewCustomWidget(),
+        appBar: AppBar(title: const Text('FontFamily Change')),
+        body: FontFamiliesWidget(),
       ),
     );
   }
 }
 
-class AppScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse,
-  };
-}
-
-class PageViewWidget extends StatelessWidget {
-  final PageController controller = PageController(initialPage: 0);
-
+class FontFamiliesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      scrollDirection: Axis.horizontal,
-      // pageSnapping: false,
-      // physics: BouncingScrollPhysics(),
-      controller: controller,
-      onPageChanged: (number) {
-        if (kDebugMode) {
-          print("Page number: $number");
-        }
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          color: Colors.red,
-          child: Center(child: Text('Stop!')),
-        ),
-        Container(
-          color: Colors.yellow,
-          child: Center(child: Text('Ready?')),
-        ),
-        Container(
-          color: Colors.green,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Go!", style: TextStyle(fontSize: 40)),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.blue),
-                ),
-                onPressed: () {
-                  // controller.jumpToPage(0);
-                  controller.animateToPage(
-                    0,
-                    duration: Duration(seconds: 1),
-                    curve: Curves.easeIn,
-                  );
-                },
-                child: Center(child: Text('Reload!')),
-              ),
-            ],
+        Text(
+          'regular',
+          style: TextStyle(
+            fontFamily: 'Outfit',
+            fontWeight: FontWeight.w400,
+            fontSize: 40,
           ),
         ),
+        Text(
+          'medium',
+          style: TextStyle(
+            fontFamily: 'Outfit',
+            fontWeight: FontWeight.w500,
+            fontSize: 40,
+          ),
+        ),
+        Text(
+          'bold',
+          style: TextStyle(
+            fontFamily: 'Outfit',
+            fontWeight: FontWeight.w700,
+            fontSize: 40,
+          ),
+        ),
+        Text('bebas', style: TextStyle(fontFamily: 'BebasNeue', fontSize: 40)),
+        Text(
+          'Google Fonts Import',
+          style: GoogleFonts.sacramento(textStyle: TextStyle(fontSize: 40)),
+        ),
       ],
-    );
-  }
-}
-
-class PageViewBuilderWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return PageView.builder(
-      itemCount: 5,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          color: index % 2 == 0 ? Colors.red : Colors.yellow,
-          alignment: Alignment.center,
-          child: Text('Page $index'),
-        );
-      },
-    );
-  }
-}
-
-class PageViewCustomWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return PageView.custom(
-      childrenDelegate: SliverChildListDelegate([
-        Text('1'),
-        Text('2'),
-        Text('3'),
-      ]),
     );
   }
 }
