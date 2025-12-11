@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(ScreenWidget());
@@ -7,139 +10,99 @@ class ScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      scrollBehavior: AppScrollBehavior(),
       home: Scaffold(
-        appBar: AppBar(title: const Text('GridView Widget')),
-        body: GridViewCustomWidget(),
+        appBar: AppBar(title: const Text('PageView Widget')),
+        body: PageViewCustomWidget(),
       ),
     );
   }
 }
 
-class TextWidget extends StatelessWidget {
-  const TextWidget({super.key, required this.text});
-
-  final String text;
-
+class AppScrollBehavior extends MaterialScrollBehavior {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1),
-      ),
-      child: Text(text, style: TextStyle(fontSize: 40)),
-    );
-  }
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
 
-class GridViewWidget extends StatelessWidget {
+class PageViewWidget extends StatelessWidget {
+  final PageController controller = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      scrollDirection: Axis.vertical,
-      reverse: false,
-      padding: EdgeInsets.all(20),
+    return PageView(
+      scrollDirection: Axis.horizontal,
+      // pageSnapping: false,
+      // physics: BouncingScrollPhysics(),
+      controller: controller,
+      onPageChanged: (number) {
+        if (kDebugMode) {
+          print("Page number: $number");
+        }
+      },
       children: [
-        TextWidget(text: '1'),
-        TextWidget(text: '2'),
-        TextWidget(text: '3'),
-        TextWidget(text: '4'),
-        TextWidget(text: '5'),
-        TextWidget(text: '6'),
-        TextWidget(text: '7'),
-        TextWidget(text: '8'),
-        TextWidget(text: '9'),
-        TextWidget(text: '10'),
+        Container(
+          color: Colors.red,
+          child: Center(child: Text('Stop!')),
+        ),
+        Container(
+          color: Colors.yellow,
+          child: Center(child: Text('Ready?')),
+        ),
+        Container(
+          color: Colors.green,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Go!", style: TextStyle(fontSize: 40)),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.blue),
+                ),
+                onPressed: () {
+                  // controller.jumpToPage(0);
+                  controller.animateToPage(
+                    0,
+                    duration: Duration(seconds: 1),
+                    curve: Curves.easeIn,
+                  );
+                },
+                child: Center(child: Text('Reload!')),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 }
 
-class GridViewBuilderWidget extends StatelessWidget {
+class PageViewBuilderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemBuilder: (context, index) {
-        return TextWidget(text: index.toString());
+    return PageView.builder(
+      itemCount: 5,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          color: index % 2 == 0 ? Colors.red : Colors.yellow,
+          alignment: Alignment.center,
+          child: Text('Page $index'),
+        );
       },
     );
   }
 }
 
-class GridViewCountWidget extends StatelessWidget {
+class PageViewCustomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      children: [
-        TextWidget(text: '1'),
-        TextWidget(text: '2'),
-        TextWidget(text: '3'),
-        TextWidget(text: '4'),
-        TextWidget(text: '5'),
-        TextWidget(text: '6'),
-        TextWidget(text: '7'),
-        TextWidget(text: '8'),
-        TextWidget(text: '9'),
-        TextWidget(text: '10'),
-      ],
-    );
-  }
-}
-
-class GridViewExtentWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final queryData = MediaQuery.of(context);
-    print(queryData.size);
-    return Container(
-      width: 300,
-      color: Colors.green,
-      child: GridView.extent(
-        maxCrossAxisExtent: 100,
-        children: [
-          TextWidget(text: '1'),
-          TextWidget(text: '2'),
-          TextWidget(text: '3'),
-          TextWidget(text: '4'),
-          TextWidget(text: '5'),
-          TextWidget(text: '6'),
-          TextWidget(text: '7'),
-          TextWidget(text: '8'),
-          TextWidget(text: '9'),
-          TextWidget(text: '10'),
-        ],
-      ),
-    );
-  }
-}
-
-class GridViewCustomWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GridView.custom(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
+    return PageView.custom(
       childrenDelegate: SliverChildListDelegate([
-        TextWidget(text: '1'),
-        TextWidget(text: '2'),
-        TextWidget(text: '3'),
-        TextWidget(text: '4'),
-        TextWidget(text: '5'),
-        TextWidget(text: '6'),
-        TextWidget(text: '7'),
-        TextWidget(text: '8'),
-        TextWidget(text: '9'),
-        TextWidget(text: '10'),
+        Text('1'),
+        Text('2'),
+        Text('3'),
       ]),
     );
   }
