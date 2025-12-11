@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() => runApp(ScreenWidget());
 
@@ -8,51 +8,37 @@ class ScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Outfit'),
       home: Scaffold(
-        appBar: AppBar(title: const Text('FontFamily Change')),
-        body: FontFamiliesWidget(),
+        appBar: AppBar(title: const Text('ImageWidget')),
+        body: ImageWidget(),
       ),
     );
   }
 }
 
-class FontFamiliesWidget extends StatelessWidget {
+class ImageWidget extends StatelessWidget {
+  const ImageWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'regular',
-          style: TextStyle(
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w400,
-            fontSize: 40,
-          ),
-        ),
-        Text(
-          'medium',
-          style: TextStyle(
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w500,
-            fontSize: 40,
-          ),
-        ),
-        Text(
-          'bold',
-          style: TextStyle(
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w700,
-            fontSize: 40,
-          ),
-        ),
-        Text('bebas', style: TextStyle(fontFamily: 'BebasNeue', fontSize: 40)),
-        Text(
-          'Google Fonts Import',
-          style: GoogleFonts.sacramento(textStyle: TextStyle(fontSize: 40)),
-        ),
-      ],
+    final String assetNamePath = 'assets/images/image1.jpg';
+    final String assetNameSVG = 'assets/icon.svg';
+    final String assetNameUrl = 'https://i.imgflip.com/1bip.jpg';
+
+    // AssetImage imageFromAssetImage = AssetImage(assetNamePath);
+    // Image imageFromAsset = Image.asset(assetNamePath, fit: BoxFit.cover);
+    // Image imageFromNetwork = Image.network(assetNameUrl, fit: BoxFit.cover);
+    // Image changedImage = Image(
+    //   image: imageFromNetwork.image,
+    //   color: Colors.green,
+    //   colorBlendMode: BlendMode.color,
+    // );
+
+    SvgPicture imageFromAssetSvg = SvgPicture.asset(assetNameSVG, fit: BoxFit.cover);
+
+    return Container(
+      constraints: BoxConstraints.expand(height: double.infinity),
+      child: imageFromAssetSvg,
     );
   }
 }
